@@ -1,0 +1,6 @@
+/cmake-build-debug/
+/Library/
+/System/
+/User/stm32f10x_conf.h
+/User/stm32f10x_it.c
+/User/stm32f10x_it.h

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" uploadOnCheckin="3f6e912f-3539-412f-84f6-3cbbe36544d8" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" persistUploadOnCheckin="false" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="xiaoenaiying (3f6e912f-3539-412f-84f6-3cbbe36544d8)">
         <serverdata>
@@ -10,6 +10,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="xiaoenaiying (3f6e912f-3539-412f-84f6-3cbbe36544d8)" />
   </component>
 </project>
