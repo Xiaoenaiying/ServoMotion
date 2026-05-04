@@ -46,7 +46,7 @@ static double normAccz; /* z轴上的加速度 */
 * @return {*}
 */
 void Common_IMU_GetEulerAngle(GyroAccel_Struct *gyroAccel,EulerAngle_Struct *eulerAngle,float dt)
-{
+{PeriOdic(10);
 volatile struct V
  {
     float x;

@@ -22,7 +22,7 @@ void PWM_Init(void)
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2; // 修改为PA2
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 	// 配置 PA3 (TIM2_CH4)
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3; // 修改为PA3
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3; // 修改为PA2
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	/*配置时钟源*/

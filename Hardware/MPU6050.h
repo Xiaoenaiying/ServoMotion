@@ -15,8 +15,6 @@ void MPU_6050_WriteReg(uint8_t RegAddress, uint8_t Data);
 
 uint8_t MPU_6050_ReadReg(uint8_t RegAddress);
 
-uint8_t MPU_6050_ReadOtherlong(uint8_t ReadAddress, uint8_t *pData, uint8_t Length);
-
 void MPU6050_WaitEvent(I2C_TypeDef* I2Cx, uint32_t I2C_EVENT);
 
 void MPU_6050_Init(void);
@@ -25,7 +23,7 @@ uint8_t MPU_6050_GetID(void);
 
 void MPU_6050_UpdataValue(void);
 
-void MPU6050_FillGyroAccel(GyroAccel_Struct *Out);
+void MPU6050_FillGyroAccel(GyroAccel_Struct *data);
 float MPU_6050_GetaccX(void);
 float MPU_6050_GetaccY(void);
 float MPU_6050_GetgyroX(void);

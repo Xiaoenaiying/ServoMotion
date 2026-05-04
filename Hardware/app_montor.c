@@ -21,7 +21,7 @@ void App_Montor_Init(void) {
     PID_Init(&PID_Servo_Thirte,0.5,7,0);
 }
 void APP_Montor_Proc(void) {
-    PeriOdic(1);//每间隔一ms执行一次
+    PeriOdic(1)//每间隔一ms执行一次
     static uint8_t m=10;
     PID_Set_SP(&PID_Servo_First,m);
     GyroAccel_Struct Servo_First;
