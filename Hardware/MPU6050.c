@@ -73,7 +73,7 @@ uint8_t MPU_6050_ReadReg(uint8_t RegAddress)
     MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
 
     I2C_Send7bitAddress(I2C2, MPU_6050_Address, I2C_Direction_Transmitter);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
 
     I2C_SendData(I2C2, RegAddress);
     MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTED);
@@ -103,7 +103,7 @@ uint8_t MPU_6050_ReadOtherlong(uint8_t ReadAddress, uint8_t *pData, uint8_t Leng
     MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
 
     I2C_Send7bitAddress(I2C2, MPU_6050_Address, I2C_Direction_Transmitter);
-    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
 
     I2C_SendData(I2C2, ReadAddress);
     MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING);
