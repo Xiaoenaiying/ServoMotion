@@ -94,6 +94,42 @@ uint8_t MPU_6050_ReadReg(uint8_t RegAddress)
 
     return Data;
 }
+
+//
+//读取任意长度的数据
+//
+uint8_t MPU_6050_ReadOtherlong(uint8_t ReadAddress, uint8_t *pData, uint8_t Length) {
+    I2C_GenerateSTART(I2C2, ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+
+    I2C_Send7bitAddress(I2C2, MPU_6050_Address, I2C_Direction_Transmitter);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+
+    I2C_SendData(I2C2, ReadAddress);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_TRANSMITTING);
+
+    I2C_GenerateSTART(I2C2, ENABLE);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT);
+
+    I2C_Send7bitAddress(I2C2, MPU_6050_Address, I2C_Direction_Receiver);
+    MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED);
+
+    while (Length)
+    {
+        if (Length == 1)
+        {
+            I2C_AcknowledgeConfig(I2C2, DISABLE);
+            I2C_GenerateSTOP(I2C2, ENABLE);
+        }
+        MPU6050_WaitEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED);
+        *pData = I2C_ReceiveData(I2C2);
+        pData++;
+        Length--;
+    }
+    I2C_AcknowledgeConfig(I2C2, ENABLE);
+    return SUCCESS;
+}
+
 //
 //MPU6050初始化
 //
@@ -136,48 +172,30 @@ uint8_t MPU_6050_GetID(void) {
  */
 void MPU_6050_UpdataValue(void)
 {
-    static uint8_t HData,LData;//读取寄存器的高八位和低八位
+    uint8_t data[14];
     static int16_t accX,accY,accZ,GyroX,GyroY,GyroZ;
     static int16_t Celsius;
     float temperature_Lraw;
+
     //
     //进行移位计算把高八位和低八位合并
     //
-    HData=MPU_6050_ReadReg(MPU6050_ACCEL_XOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_ACCEL_XOUT_L);
-    accX=(HData<<8)|LData;
+    MPU_6050_ReadOtherlong(MPU6050_ACCEL_XOUT_H,data,14);
+    accX=(int16_t)(data[0]<<8|data[1]);
+    accY=(int16_t)(data[2]<<8|data[3]);
+    accZ=(int16_t)(data[4]<<8|data[5]);
+    Celsius=(int16_t)(data[6]<<8|data[7]);
+    GyroX=(int16_t)(data[8]<<8|data[9]);
+    GyroY=(int16_t)(data[10]<<8|data[11]);
+    GyroZ=(int16_t)(data[12]<<8|data[13]);
     ax_raw=accX*4.8828125e-4f;
-
-    HData=MPU_6050_ReadReg(MPU6050_ACCEL_YOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_ACCEL_YOUT_L);
-    accY=(HData<<8)|LData;
     ay_raw=accY*4.8828125e-4f;
-
-    HData=MPU_6050_ReadReg(MPU6050_ACCEL_ZOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_ACCEL_ZOUT_L);
-    accZ=(HData<<8)|LData;
     az_raw=accZ*4.8828125e-4f;
-
-    HData=MPU_6050_ReadReg(MPU6050_TEMP_OUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_TEMP_OUT_L);
-    Celsius=(HData<<8)|LData;
     temperature_raw=Celsius/340+36.53f;
-
-    HData=MPU_6050_ReadReg(MPU6050_GYRO_XOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_GYRO_XOUT_L);
-    GyroX=(HData<<8)|LData;
-    gx_raw=(GyroX*6.1035e-2f);
-
-    HData=MPU_6050_ReadReg(MPU6050_GYRO_YOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_GYRO_YOUT_L);
-    GyroY=(HData<<8)|LData;
+    gx_raw=GyroX*6.1035e-2f;
     gy_raw=GyroY*6.1035e-2f;
-
-    HData=MPU_6050_ReadReg(MPU6050_GYRO_ZOUT_H);
-    LData=MPU_6050_ReadReg(MPU6050_GYRO_ZOUT_L);
-    GyroZ=(HData<<8)|LData;
     gz_raw=GyroZ*6.1035e-2f;
-
+;
     //
     //@简介：对原始数据先进行低通滤波处理
     //
