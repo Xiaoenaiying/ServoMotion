@@ -38,7 +38,7 @@ void Delay_Init(void)
 		SysTick->CTRL |= SysTick_CTRL_TICKINT; // 开启中断
 
 		// 设置中断优先级为0
-		SCB->SHP[7] = 0;
+		NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 1, 0));
 
 		// 设置自动重装值以保证1ms的时钟
 		tmp =  clockinfo.HCLK_Frequency / 1000;

@@ -1,12 +1,3 @@
-/**
-  ******************************************************************************
-  * @file    usart.c
-  * @author  铁头山羊
-  * @version V 1.0.0
-  * @date    2024年9月1日
-  * @brief   串口源文件
-  ******************************************************************************
-  */
 
 #include "usart.h"
 #include <stdio.h>
@@ -14,6 +5,34 @@
 #include <stdarg.h>
 #include "delay.h"
 
+//
+//初始化usart
+//
+void APP_USARTInit(uint16_t TX_Pin,uint16_t RX_Pin,uint32_t BaudRate){
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_InitStructure.GPIO_Pin = TX_Pin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+	GPIO_InitStructure.GPIO_Pin = RX_Pin;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+	USART_InitTypeDef USART_InitStructure;
+	USART_InitStructure.USART_BaudRate = BaudRate;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_Mode= USART_Mode_Rx | USART_Mode_Tx;
+	USART_Init(USART1, &USART_InitStructure);
+	USART_Cmd(USART1, ENABLE);
+
+}
 //
 // @简介：使用串口发送一个字节的数据
 // 
