@@ -27,7 +27,6 @@ void MPU_6050_eularTest(void) {
     MPU_6050_Init();
     APP_USARTInit(GPIO_Pin_9,GPIO_Pin_10,115200);
     Servo_Init();
-    SysTick_Handler();
     while(1) {
         MPU6050_FillGyroAccel(&Data);
         GyroAccel_Struct fullData;
