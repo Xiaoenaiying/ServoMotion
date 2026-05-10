@@ -175,7 +175,6 @@ void MPU_6050_UpdataValue(void)
     uint8_t data[14];
     static int16_t accX,accY,accZ,GyroX,GyroY,GyroZ;
     static int16_t Celsius;
-    float temperature_Lraw;
 
     //
     //进行移位计算把高八位和低八位合并
