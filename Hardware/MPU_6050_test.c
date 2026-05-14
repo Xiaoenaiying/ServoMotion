@@ -8,7 +8,7 @@
 #include "Servo.h"
 #include "NVIC.h"
 
-GyroAccel_Struct Data;
+GyroAccel_Struct Data={0};
 static float AX, AY, AZ,GX,GY,GZ,Tempture;
 static EulerAngle_Struct euler = {0};
 static float M=0.01f;
@@ -29,14 +29,7 @@ void MPU_6050_eularTest(void) {
     Servo_Init();
     while(1) {
         MPU6050_FillGyroAccel(&Data);
-        GyroAccel_Struct fullData;
-        fullData.accel.accelX = Data.accel.accelX;
-        fullData.accel.accelY = Data.accel.accelY;
-        fullData.accel.accelZ = Data.accel.accelZ;
-        fullData.gyro.gyroX   = Data.gyro.gyroX;
-        fullData.gyro.gyroY   = Data.gyro.gyroY;
-        fullData.gyro.gyroZ   = Data.gyro.gyroZ;
-        Common_IMU_GetEulerAngle(&fullData,&euler,M);
+        Common_IMU_GetEulerAngle(&Data,&euler,M);
         AX=MPU_6050_GetaccX();
         AY=MPU_6050_GetaccY();
         AZ=Common_IMU_GetNormAccZ();

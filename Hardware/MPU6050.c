@@ -21,6 +21,7 @@ double ax_rawCrman,ay_rawCrman,az_rawCrman;
 float gx_Lraw,gy_Lraw,gz_Lraw;
 float ax_Lraw,ay_Lraw,az_Lraw;
 float temperature_Lraw;
+
 //MPU6050的地址
 #define MPU_6050_Address 0xD0
 /**
@@ -226,22 +227,24 @@ void MPU_6050_UpdataValue(void)
 
 
 /**
- * @brief 将MPU6050原始数据填入GyroAccel_Struct
- * @param data 指向结构体的指针
+ * @brief 获取最新的传感器数据（加速度+角速度）
+ * @param out 输出参数，用于存储读取到的数据
+ * @retval 0 成功，-1 失败（如参数为NULL或硬件未就绪）
  */
-void MPU6050_FillGyroAccel(GyroAccel_Struct *data)
-{
-    PeriOdic(10);
+void MPU6050_FillGyroAccel(GyroAccel_Struct *Out) {
+    static uint8_t Tick=1;
+    if (Tick){MPU_6050_UpdataValue();Tick=0;}
+    PeriOdic(10)
     MPU_6050_UpdataValue();   // 刷新原始数据到 ax_raw, gx_raw 等
 
     // 将数据填入对应结构体
-    data->accel.accelX = ax_rawCrman;
-    data->accel.accelY = ay_rawCrman;
-    data->accel.accelZ = az_rawCrman;
+    Out->accel.accelX = ax_rawCrman;
+    Out->accel.accelY = ay_rawCrman;
+    Out->accel.accelZ = az_rawCrman;
 
-    data->gyro.gyroX = gx_Lraw;
-    data->gyro.gyroY = gy_Lraw;
-    data->gyro.gyroZ = gz_Lraw;
+    Out->gyro.gyroX = gx_Lraw;
+    Out->gyro.gyroY = gy_Lraw;
+    Out->gyro.gyroZ = gz_Lraw;
 }
 //
 //读取卡尔曼滤波后的X轴加速度

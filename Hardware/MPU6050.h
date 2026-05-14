@@ -25,7 +25,7 @@ uint8_t MPU_6050_GetID(void);
 
 void MPU_6050_UpdataValue(void);
 
-void MPU6050_FillGyroAccel(GyroAccel_Struct *data);
+void MPU6050_FillGyroAccel(GyroAccel_Struct *Out);
 float MPU_6050_GetaccX(void);
 float MPU_6050_GetaccY(void);
 float MPU_6050_GetgyroX(void);
